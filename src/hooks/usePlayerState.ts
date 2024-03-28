@@ -7,7 +7,7 @@ interface PlayerStateValues {
 }
 interface PlayerHookReturn {
   player: PlayerStateValues;
-  heal: (value: any) => void;
+  heal: (value: number) => void;
   attack: (damage: number) => void;
   useMagic: (cost: number) => void;
   usePotion: (value: number) => void;
