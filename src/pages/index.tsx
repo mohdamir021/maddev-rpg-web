@@ -1,5 +1,7 @@
-import PlayerControls from "@/components/actions/PlayerControls";
-import PlayerStatsBoard from "@/components/models/PlayerStatsBoard";
+import PlayerControlHook from "@/components/actions/PlayerControlHook";
+// import PlayerControlEffects from "@/components/actions/PlayerControlEffects";
+// import PlayerControls from "@/components/actions/PlayerControls";
+// import PlayerStatsBoard from "@/components/models/PlayerStatsBoard";
 import Head from "next/head";
 
 export default function Home() {
@@ -14,8 +16,8 @@ export default function Home() {
       <main>
         <div>
           <h1>Initialization</h1>
-          <PlayerStatsBoard />
-          <PlayerControls />
+
+          <PlayerControlHook />
         </div>
       </main>
     </>

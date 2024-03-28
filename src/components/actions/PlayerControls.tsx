@@ -1,23 +1,24 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
-import React, { useEffect } from "react";
+import React from "react";
 import { Player } from "@/classes/Player";
 import { Box, Button, Text } from "@chakra-ui/react";
 
 const PlayerControls: React.FC = () => {
   // Initialize the player state object using the useState hook
   const [player, setPlayer] = React.useState(new Player("Player 1", 100, 50));
-  const [playerStat, setPlayerStat] = React.useState<string>(player.toString());
+  // const player = new Player("Player 1", 100, 50);
+  const [, setPlayerStat] = React.useState<string>(player.toString());
 
   // Manipulate the player's state by calling the methods of the Player class
   const movePlayer = (location: string) => {
     player.move(location);
-    setPlayer(player);
+    // setPlayer(player);
     setPlayerStat(player.toString());
   };
 
   const interactWithObject = (object: any) => {
     player.interact(object);
-    setPlayer(player);
+    // setPlayer(player);
     setPlayerStat(player.toString());
   };
 
