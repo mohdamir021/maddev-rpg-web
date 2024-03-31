@@ -1,5 +1,6 @@
 import PlayerControlHook from "@/components/actions/PlayerControlHook";
 import PlayerCodeBlocks from "@/components/models/PlayerCodeBlocks";
+import { Box } from "@chakra-ui/react";
 // import PlayerControlEffects from "@/components/actions/PlayerControlEffects";
 // import PlayerControls from "@/components/actions/PlayerControls";
 // import PlayerStatsBoard from "@/components/models/PlayerStatsBoard";
@@ -14,13 +15,13 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <Box w={"full"} h={"full"} style={{ backgroundColor: "black" }}>
         <div>
           <h1>Initialization</h1>
           <PlayerControlHook />
           <PlayerCodeBlocks />
         </div>
-      </main>
+      </Box>
     </>
   );
 }

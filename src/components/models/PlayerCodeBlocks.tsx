@@ -1,6 +1,6 @@
 import { Box, SimpleGrid, Text } from "@chakra-ui/react";
 import React from "react";
-import { CodeBlock } from "react-code-blocks";
+import { CodeBlock, a11yDark } from "react-code-blocks";
 
 export default function PlayerCodeBlocks() {
   return (
@@ -11,6 +11,7 @@ export default function PlayerCodeBlocks() {
         </Text>
         <Box my={2}>
           <CodeBlock
+            theme={a11yDark}
             language="typescript"
             text={`// src:/hooks/usePlayerState.tsx
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
@@ -81,6 +82,7 @@ export default function usePlayerState(values?: PlayerStateValues): PlayerHookRe
         </Text>
         <Box my={2}>
           <CodeBlock
+            theme={a11yDark}
             language="typescript"
             text={`// src:/components/PlayerControlBoard.tsx
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */

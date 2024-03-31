@@ -1,62 +1,56 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
+import { useAppToast } from "@/utils/useAppToast";
 import { useState, useEffect } from "react";
 
-interface PlayerStateValues {
-  health: number;
-  mana: number;
+interface StatePatternV1<T> {
+  get: () => T;
+  set: React.Dispatch<React.SetStateAction<T>>;
+  effect: (callback?: (value: T) => void, dependencies?: unknown[]) => void;
 }
+
+const generateStatePattern = ([value, setValue]: [
+  any,
+  React.Dispatch<React.SetStateAction<any>>,
+]): StatePatternV1<any> => {
+  return {
+    get: () => value,
+    set: setValue?.bind(null),
+    effect: (callback?: (currValue?: typeof value) => void, deps?: unknown[]) => {
+      useEffect(() => {
+        callback?.(value);
+      }, [...(deps ?? []), value]);
+    },
+  };
+};
+
 interface PlayerHookReturn {
-  player: PlayerStateValues;
-  heal: (value: number) => void;
+  health: StatePatternV1<number>;
+  mana: StatePatternV1<number>;
+  // heal: (value: number) => void;
   attack: (damage: number) => void;
   useMagic: (cost: number) => void;
-  usePotion: (value: number) => void;
+  // usePotion: (value: number) => void;
 }
 
-const initialPlayerState = (): PlayerStateValues => ({ health: 1000, mana: 100 });
-
-export default function usePlayerState(values?: PlayerStateValues): PlayerHookReturn {
+export default function usePlayerState(): PlayerHookReturn {
   // Initialize state
-  const [player, setPlayer] = useState(values ?? initialPlayerState());
-
-  // Effects
-  // runs on state updates
-  useEffect(() => {
-    console.log("Player stats updated!");
-  });
-
-  // runs once
-  useEffect(() => {
-    console.log("Player initialized ...");
-  }, []);
-
-  // runs on specified dependencies changing
-  useEffect(() => {
-    console.log("Player's mana updated!");
-  }, [player.mana]);
+  const { showToast } = useAppToast();
+  const health = generateStatePattern(useState(300));
+  const mana = generateStatePattern(useState(50));
 
   // Return Value
   return {
-    // state
-    player,
-    // methods
-    heal: (value: number) => {
-      setPlayer({ ...player, health: player.health + value });
-    },
+    health,
+    mana,
     attack: (damage: number) => {
-      setPlayer({ ...player, health: player.health - 5 });
-      console.log(`Player deals ${damage} damage`);
+      health.get() < 51
+        ? showToast({ title: "Low health, go heal", status: "error" })
+        : showToast({ title: `Damage dealt: ${damage} pts`, status: "warning" });
+      health.get() > 50 && health.set(health.get() - 5);
     },
-    useMagic: (cost: number) => {
-      if (player.mana >= cost) {
-        setPlayer({ ...player, mana: player.mana - cost });
-        return true;
-      } else {
-        return false;
-      }
-    },
-    usePotion: (values: number) => {
-      setPlayer({ ...player, mana: player.mana + values });
-    },
+    useMagic: (cost: number) =>
+      cost > mana.get()
+        ? showToast({ title: "Not enough mana", status: "error" })
+        : mana.set(mana.get() - cost),
   };
 }
